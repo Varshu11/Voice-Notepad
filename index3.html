@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice Notepad - Made with Love 💙</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(to right, #c9d6ff, #e2e2e2);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin: 30px 0 15px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      resize: none;
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 90%;
+      padding: 20px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: #7c5fff;
+      color: white;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      textarea {
+        height: 250px;
+        font-size: 14px;
+      }
+
+      button {
+        flex: 1 1 45%;
+        font-size: 13px;
+      }
+
+      .controls {
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎤 Voice Notepad - Made with Love 💙</h1>
+  <div class="container">
+    <textarea id="note" placeholder="Start speaking or typing..."></textarea>
+    <div class="controls">
+        <label for="language">🌐 Language: </label>
+<select id="language">
+  <option value="en-US">English</option>
+  <option value="ta-IN">Tamil</option>
+  <option value="hi-IN">Hindi</option>
+  <option value="fr-FR">French</option>
+</select>
+
+      <button onclick="startListening()">🎙️ Start Listening</button>
+      <button onclick="readAloud()">🔊 Read Aloud</button>
+      <button onclick="clearNote()">🗑️ Clear Note</button>
+    </div>
+  </div>
+
+  <script>
+    // Dynamic language from dropdown
+const langSelect = document.getElementById("language");
+
+function startListening() {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = langSelect.value; // get selected language
+  recognition.onresult = function (event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById("note").value += transcript + " ";
+  };
+  recognition.start();
+}
+
+function readAloud() {
+  const synth = window.speechSynthesis;
+  const text = document.getElementById("note").value;
+  const utterThis = new SpeechSynthesisUtterance(text);
+  utterThis.lang = langSelect.value; // get selected language
+  synth.speak(utterThis);
+}
+
+    
+
+    
+  </script>
+</body>
+</html>
